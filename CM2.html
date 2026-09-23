@@ -1,0 +1,2852 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Contractor Management</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+            padding: 0;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            background: #eef3f8;
+
+            color: #172b4d;
+
+        }
+
+
+        .page-container {
+
+            max-width: 1200px;
+
+            margin: 30px auto;
+
+            padding: 0 20px;
+
+        }
+
+
+        .header {
+
+            background: #063b66;
+
+            color: white;
+
+            padding: 25px 30px;
+
+            border-radius:
+                12px
+                12px
+                0
+                0;
+
+        }
+
+
+        .header h1 {
+
+            margin: 0;
+
+            font-size: 28px;
+
+        }
+
+
+        .header p {
+
+            margin:
+                8px
+                0
+                0;
+
+            opacity: 0.9;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding:
+                25px
+                30px;
+
+            margin-bottom: 20px;
+
+            border-radius:
+                0
+                0
+                12px
+                12px;
+
+            box-shadow:
+                0
+                2px
+                8px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+
+        }
+
+
+        .section {
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .section-title {
+
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: #063b66;
+
+            margin-bottom: 15px;
+
+            border-bottom:
+                2px solid #e3eaf1;
+
+            padding-bottom: 8px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        select,
+        input {
+
+            width: 100%;
+
+            padding:
+                11px
+                12px;
+
+            border:
+                1px solid #ccd6e0;
+
+            border-radius: 6px;
+
+            font-size: 14px;
+
+            background: white;
+
+        }
+
+
+        select:focus,
+        input:focus {
+
+            outline: none;
+
+            border-color: #1677c8;
+
+        }
+
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    2,
+                    1fr
+                );
+
+            gap: 20px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .po-details {
+
+            background: #f5f8fb;
+
+            border:
+                1px solid #dce5ed;
+
+            border-radius: 8px;
+
+            padding: 18px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .po-detail-row {
+
+            display: grid;
+
+            grid-template-columns:
+                150px
+                1fr;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .po-detail-label {
+
+            font-weight: 600;
+
+            color: #5d6d7e;
+
+        }
+
+
+        .search-container {
+
+            position: relative;
+
+        }
+
+
+        .search-input {
+
+            padding-right: 40px;
+
+        }
+
+
+        .dropdown-list {
+
+            position: absolute;
+
+            left: 0;
+
+            right: 0;
+
+            top: 100%;
+
+            background: white;
+
+            border:
+                1px solid #ccd6e0;
+
+            border-top: none;
+
+            max-height: 250px;
+
+            overflow-y: auto;
+
+            z-index: 1000;
+
+            border-radius:
+                0
+                0
+                6px
+                6px;
+
+            box-shadow:
+                0
+                4px
+                8px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.12
+                );
+
+        }
+
+
+        .dropdown-item {
+
+            padding:
+                10px
+                12px;
+
+            cursor: pointer;
+
+            border-bottom:
+                1px solid #edf1f4;
+
+        }
+
+
+        .dropdown-item:hover {
+
+            background: #f1f6fa;
+
+        }
+
+
+        .dropdown-item:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .hidden {
+
+            display: none !important;
+
+        }
+
+
+        .job-type-container {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+        .job-option {
+
+            flex: 1;
+
+        }
+
+
+        .job-option input {
+
+            display: none;
+
+        }
+
+
+        .job-option label {
+
+            padding: 12px;
+
+            text-align: center;
+
+            border:
+                1px solid #ccd6e0;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            transition:
+                all
+                0.2s
+                ease;
+
+            margin: 0;
+
+        }
+
+
+        .job-option input:checked + label {
+
+            background: #063b66;
+
+            color: white;
+
+            border-color: #063b66;
+
+        }
+
+
+        .worker-search {
+
+            position: relative;
+
+        }
+
+
+        .selected-workers {
+
+            margin-top: 20px;
+
+        }
+
+
+        .worker-card {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding:
+                14px
+                16px;
+
+            background: #f6f9fc;
+
+            border:
+                1px solid #dce5ed;
+
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .worker-info {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 3px;
+
+        }
+
+
+        .worker-name {
+
+            font-weight: 600;
+
+            color: #063b66;
+
+        }
+
+
+        .worker-details {
+
+            font-size: 13px;
+
+            color: #667788;
+
+        }
+
+
+        .remove-worker {
+
+            border: none;
+
+            background: #fbe8e8;
+
+            color: #b42318;
+
+            padding:
+                7px
+                12px;
+
+            border-radius: 6px;
+
+            cursor: pointer;
+
+            font-weight: 600;
+
+        }
+
+
+        .remove-worker:hover {
+
+            background: #f6d3d3;
+
+        }
+
+
+        .btn-container {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 10px;
+
+            margin-top: 25px;
+
+        }
+
+
+        button {
+
+            font-family: inherit;
+
+        }
+
+
+        .btn {
+
+            border: none;
+
+            padding:
+                11px
+                20px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-add {
+
+            background: #e8f2fa;
+
+            color: #063b66;
+
+        }
+
+
+        .btn-add:hover {
+
+            background: #d8e9f6;
+
+        }
+
+
+        .btn-submit {
+
+            background: #063b66;
+
+            color: white;
+
+            min-width: 130px;
+
+        }
+
+
+        .btn-submit:hover {
+
+            background: #042c4d;
+
+        }
+
+
+        .btn-submit:disabled {
+
+            background: #a8b5c1;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .replacement-container {
+
+            margin-top: 15px;
+
+        }
+
+
+        .status-message {
+
+            margin-top: 20px;
+
+            padding:
+                12px
+                15px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+        }
+
+
+        .success-message {
+
+            background: #e8f7ee;
+
+            border:
+                1px solid #b7e4c7;
+
+            color: #176b3a;
+
+        }
+
+
+        .error-message {
+
+            background: #fdecec;
+
+            border:
+                1px solid #f5c2c2;
+
+            color: #a61b1b;
+
+        }
+
+
+        .info-message {
+
+            background: #eaf4fb;
+
+            border:
+                1px solid #c7e0f2;
+
+            color: #145b85;
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .form-row {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .job-type-container {
+
+                flex-direction: column;
+
+            }
+
+
+            .po-detail-row {
+
+                grid-template-columns: 1fr;
+
+                gap: 3px;
+
+            }
+
+
+            .page-container {
+
+                margin: 10px auto;
+
+                padding: 0 10px;
+
+            }
+
+
+            .card {
+
+                padding: 20px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <div class="header">
+
+        <h1>
+            Contractor Management
+        </h1>
+
+        <p>
+            Worker Assignment
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+
+        <!-- ==================================================
+             PO SECTION
+        ================================================== -->
+
+        <div class="section">
+
+            <div class="section-title">
+                Purchase Order
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="poSearch">
+                    Search / Select PO
+                </label>
+
+
+                <div class="search-container">
+
+                    <input
+                        type="text"
+                        id="poSearch"
+                        class="search-input"
+                        placeholder="Search PO..."
+                        autocomplete="off"
+                    >
+
+
+                    <div
+                        id="poDropdown"
+                        class="dropdown-list hidden">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="poDetails"
+                class="po-details hidden">
+
+
+                <div class="po-detail-row">
+
+                    <div class="po-detail-label">
+                        PO ID
+                    </div>
+
+                    <div id="displayPOID"></div>
+
+                </div>
+
+
+                <div class="po-detail-row">
+
+                    <div class="po-detail-label">
+                        Work Order
+                    </div>
+
+                    <div id="displayWorkOrder"></div>
+
+                </div>
+
+
+                <div class="po-detail-row">
+
+                    <div class="po-detail-label">
+                        Description
+                    </div>
+
+                    <div id="displayDescription"></div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             JOB TYPE
+        ================================================== -->
+
+        <div class="section">
+
+            <div class="section-title">
+                Job Type
+            </div>
+
+
+            <div class="job-type-container">
+
+
+                <div class="job-option">
+
+                    <input
+                        type="radio"
+                        id="jobNew"
+                        name="jobType"
+                        value="N"
+                    >
+
+                    <label for="jobNew">
+                        New
+                    </label>
+
+                </div>
+
+
+                <div class="job-option">
+
+                    <input
+                        type="radio"
+                        id="jobReplacement"
+                        name="jobType"
+                        value="R"
+                    >
+
+                    <label for="jobReplacement">
+                        Replacement
+                    </label>
+
+                </div>
+
+
+                <div class="job-option">
+
+                    <input
+                        type="radio"
+                        id="jobAdditional"
+                        name="jobType"
+                        value="A"
+                    >
+
+                    <label for="jobAdditional">
+                        Additional
+                    </label>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             REPLACEMENT
+        ================================================== -->
+
+        <div
+            id="replacementSection"
+            class="section hidden">
+
+
+            <div class="section-title">
+                Replacement ID
+            </div>
+
+
+            <div class="replacement-container">
+
+
+                <label for="replacementSelect">
+                    Select Replacement
+                </label>
+
+
+                <select id="replacementSelect">
+
+                    <option value="">
+                        Select Replacement ID
+                    </option>
+
+                </select>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             WORKER
+        ================================================== -->
+
+        <div class="section">
+
+
+            <div class="section-title">
+                Worker Assignment
+            </div>
+
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+
+                    <label for="workerSearch">
+                        Search Worker
+                    </label>
+
+
+                    <div
+                        class="search-container worker-search">
+
+
+                        <input
+                            type="text"
+                            id="workerSearch"
+                            placeholder="Search worker..."
+                            autocomplete="off"
+                        >
+
+
+                        <div
+                            id="workerDropdown"
+                            class="dropdown-list hidden">
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="form-group">
+
+
+                    <label for="workerDesignation">
+                        Designation
+                    </label>
+
+
+                    <input
+                        type="text"
+                        id="workerDesignation"
+                        readonly
+                        placeholder="Worker designation"
+                    >
+
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="addWorkerBtn"
+                class="btn btn-add">
+
+                + Add Worker
+
+            </button>
+
+
+            <div
+                id="selectedWorkers"
+                class="selected-workers">
+            </div>
+
+
+        </div>
+
+
+        <!-- ==================================================
+             SUBMIT
+        ================================================== -->
+
+        <div class="btn-container">
+
+
+            <button
+                type="button"
+                id="submitBtn"
+                class="btn btn-submit">
+
+                Submit All
+
+            </button>
+
+
+        </div>
+
+
+        <!-- ==================================================
+             STATUS
+        ================================================== -->
+
+        <div
+            id="statusMessage"
+            class="status-message hidden">
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+/* ==========================================================
+   SHAREPOINT CONFIGURATION
+   ========================================================== */
+
+const SP_SITE =
+    "https://basf.sharepoint.com/sites/bpc-contractor-mgmt-ext";
+
+
+const SP_LISTS = {
+
+    PO:
+        "SP_CM_PO_DATABASE",
+
+    CONTRACTOR:
+        "SP_CM_ContractorProfile_Database",
+
+    REPLACEMENT:
+        "SP_CM_ReplacementAdditionalWorker"
+
+};
+
+
+
+/* ==========================================================
+   LIVE DATA ARRAYS
+   ========================================================== */
+
+let poData = [];
+
+let workerData = [];
+
+let replacementAdditionalData = [];
+
+
+
+/* ==========================================================
+   SHAREPOINT REST API HELPER
+   ========================================================== */
+
+async function fetchSharePointList(
+    listName,
+    selectFields
+) {
+
+
+    let allItems = [];
+
+
+    let requestUrl =
+
+        SP_SITE +
+
+        "/_api/web/lists/getbytitle('" +
+
+        encodeURIComponent(
+            listName
+        ) +
+
+        "')/items" +
+
+        "?$select=" +
+
+        selectFields +
+
+        "&$top=5000";
+
+
+    try {
+
+
+        while (requestUrl) {
+
+
+            console.log(
+                "Loading SharePoint list:",
+                listName
+            );
+
+
+            const response =
+
+                await fetch(
+
+                    requestUrl,
+
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Accept":
+                                "application/json;odata=verbose"
+
+                        },
+
+                        credentials:
+                            "include"
+
+                    }
+
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+
+                    "SharePoint API error " +
+
+                    response.status +
+
+                    ": " +
+
+                    response.statusText
+
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            const items =
+
+                data &&
+
+                data.d &&
+
+                data.d.results
+
+                    ? data.d.results
+
+                    : [];
+
+
+            allItems =
+                allItems.concat(
+                    items
+                );
+
+
+            /*
+             * SharePoint REST pagination.
+             *
+             * If SharePoint returns
+             * another page, continue.
+             */
+
+            requestUrl =
+
+                data &&
+
+                data.d &&
+
+                data.d.__next
+
+                    ? data.d.__next
+
+                    : null;
+
+
+        }
+
+
+        console.log(
+
+            "Loaded",
+
+            allItems.length,
+
+            "items from",
+
+            listName
+
+        );
+
+
+        return allItems;
+
+
+    } catch (error) {
+
+
+        console.error(
+
+            "Error loading SharePoint list:",
+
+            listName,
+
+            error
+
+        );
+
+
+        throw error;
+
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   LOAD PO DATA
+   ========================================================== */
+
+async function loadPOData() {
+
+
+    const items =
+
+        await fetchSharePointList(
+
+            SP_LISTS.PO,
+
+            [
+
+                "Id",
+
+                "field_12",
+
+                "WorkOrder",
+
+                "field_2",
+
+                "PO_x0020_Display"
+
+            ].join(",")
+
+        );
+
+
+    poData =
+
+        items.map(
+
+            function (item) {
+
+
+                return {
+
+                    Id:
+                        item.Id,
+
+                    PO_ID:
+                        item.field_12,
+
+                    WorkOrder:
+                        item.WorkOrder,
+
+                    Description:
+                        item.field_2,
+
+                    Display:
+                        item.PO_x0020_Display
+
+                };
+
+
+            }
+
+        );
+
+
+    console.log(
+
+        "PO data loaded:",
+
+        poData.length
+
+    );
+
+
+}
+
+
+
+/* ==========================================================
+   LOAD CONTRACTOR DATA
+   ========================================================== */
+
+async function loadContractorData() {
+
+
+    const items =
+
+        await fetchSharePointList(
+
+            SP_LISTS.CONTRACTOR,
+
+            [
+
+                "Id",
+
+                "Title",
+
+                "field_2",
+
+                "field_3",
+
+                "field_4",
+
+                "field_5"
+
+            ].join(",")
+
+        );
+
+
+    workerData =
+
+        items.map(
+
+            function (item) {
+
+
+                return {
+
+                    Id:
+                        item.Id,
+
+                    EmpID:
+                        item.Title,
+
+                    FirstName:
+                        item.field_2,
+
+                    LastName:
+                        item.field_3,
+
+                    Designation:
+                        item.field_4,
+
+                    Company:
+                        item.field_5
+
+                };
+
+
+            }
+
+        );
+
+
+    console.log(
+
+        "Contractor data loaded:",
+
+        workerData.length
+
+    );
+
+
+}
+
+
+
+/* ==========================================================
+   LOAD REPLACEMENT / ADDITIONAL DATA
+   ========================================================== */
+
+async function loadReplacementAdditionalData() {
+
+
+    const items =
+
+        await fetchSharePointList(
+
+            SP_LISTS.REPLACEMENT,
+
+            [
+
+                "Id",
+
+                "ReplacementID",
+
+                "FirstName",
+
+                "LastName",
+
+                "Designation"
+
+            ].join(",")
+
+        );
+
+
+    replacementAdditionalData =
+
+        items.map(
+
+            function (item) {
+
+
+                return {
+
+                    Id:
+                        item.Id,
+
+                    ReplacementID:
+                        item.ReplacementID,
+
+                    FirstName:
+                        item.FirstName,
+
+                    LastName:
+                        item.LastName,
+
+                    Designation:
+                        item.Designation
+
+                };
+
+
+            }
+
+        );
+
+
+    console.log(
+
+        "Replacement / Additional data loaded:",
+
+        replacementAdditionalData.length
+
+    );
+
+
+}
+
+
+
+/* ==========================================================
+   LOAD ALL DATA
+   ========================================================== */
+
+async function loadContractorManagementData() {
+
+
+    try {
+
+
+        showStatus(
+
+            "Loading Contractor Management data...",
+
+            "info"
+
+        );
+
+
+        await Promise.all(
+
+            [
+
+                loadPOData(),
+
+                loadContractorData(),
+
+                loadReplacementAdditionalData()
+
+            ]
+
+        );
+
+
+        console.log(
+            "================================="
+        );
+
+        console.log(
+            "Contractor Management data loaded"
+        );
+
+        console.log(
+            "PO:",
+            poData.length
+        );
+
+        console.log(
+            "Contractors:",
+            workerData.length
+        );
+
+        console.log(
+            "Replacement / Additional:",
+            replacementAdditionalData.length
+        );
+
+        console.log(
+            "================================="
+        );
+
+
+        statusMessage.classList.add(
+            "hidden"
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "Failed to load data:",
+            error
+        );
+
+
+        showStatus(
+
+            "Unable to load data from SharePoint. " +
+            "Please check your SharePoint access or contact Digital Technology.",
+
+            "error"
+
+        );
+
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   VARIABLES
+   ========================================================== */
+
+let selectedPO = null;
+
+let selectedReplacement = null;
+
+let selectedWorkers = [];
+
+
+
+/* ==========================================================
+   ELEMENTS
+   ========================================================== */
+
+const poSearch =
+    document.getElementById(
+        "poSearch"
+    );
+
+
+const poDropdown =
+    document.getElementById(
+        "poDropdown"
+    );
+
+
+const poDetails =
+    document.getElementById(
+        "poDetails"
+    );
+
+
+const displayPOID =
+    document.getElementById(
+        "displayPOID"
+    );
+
+
+const displayWorkOrder =
+    document.getElementById(
+        "displayWorkOrder"
+    );
+
+
+const displayDescription =
+    document.getElementById(
+        "displayDescription"
+    );
+
+
+const replacementSection =
+    document.getElementById(
+        "replacementSection"
+    );
+
+
+const replacementSelect =
+    document.getElementById(
+        "replacementSelect"
+    );
+
+
+const workerSearch =
+    document.getElementById(
+        "workerSearch"
+    );
+
+
+const workerDropdown =
+    document.getElementById(
+        "workerDropdown"
+    );
+
+
+const workerDesignation =
+    document.getElementById(
+        "workerDesignation"
+    );
+
+
+const addWorkerBtn =
+    document.getElementById(
+        "addWorkerBtn"
+    );
+
+
+const selectedWorkersContainer =
+    document.getElementById(
+        "selectedWorkers"
+    );
+
+
+const submitBtn =
+    document.getElementById(
+        "submitBtn"
+    );
+
+
+const statusMessage =
+    document.getElementById(
+        "statusMessage"
+    );
+
+
+
+/* ==========================================================
+   PO SEARCH
+   ========================================================== */
+
+function renderPODropdown(
+    searchText = ""
+) {
+
+
+    const text =
+
+        searchText
+            .toLowerCase()
+            .trim();
+
+
+    const filtered =
+
+        poData.filter(
+
+            function (po) {
+
+
+                return (
+
+                    String(
+                        po.PO_ID || ""
+                    )
+                    .toLowerCase()
+                    .includes(text)
+
+                    ||
+
+                    String(
+                        po.WorkOrder || ""
+                    )
+                    .toLowerCase()
+                    .includes(text)
+
+                    ||
+
+                    String(
+                        po.Description || ""
+                    )
+                    .toLowerCase()
+                    .includes(text)
+
+                );
+
+
+            }
+
+        );
+
+
+    poDropdown.innerHTML = "";
+
+
+    filtered
+
+        .slice(
+            0,
+            50
+        )
+
+        .forEach(
+
+            function (po) {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "dropdown-item";
+
+
+                item.textContent =
+
+                    (
+                        po.PO_ID || ""
+                    ) +
+
+                    " - " +
+
+                    (
+                        po.WorkOrder || ""
+                    );
+
+
+                item.addEventListener(
+
+                    "click",
+
+                    function () {
+
+                        selectPO(po);
+
+                    }
+
+                );
+
+
+                poDropdown.appendChild(
+                    item
+                );
+
+
+            }
+
+        );
+
+
+    if (
+        filtered.length > 0
+    ) {
+
+
+        poDropdown.classList.remove(
+            "hidden"
+        );
+
+
+    } else {
+
+
+        poDropdown.classList.add(
+            "hidden"
+        );
+
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   SELECT PO
+   ========================================================== */
+
+function selectPO(po) {
+
+
+    selectedPO =
+        po;
+
+
+    poSearch.value =
+        po.PO_ID || "";
+
+
+    displayPOID.textContent =
+        po.PO_ID || "-";
+
+
+    displayWorkOrder.textContent =
+        po.WorkOrder || "-";
+
+
+    displayDescription.textContent =
+        po.Description || "-";
+
+
+    poDetails.classList.remove(
+        "hidden"
+    );
+
+
+    poDropdown.classList.add(
+        "hidden"
+    );
+
+}
+
+
+
+/* ==========================================================
+   PO EVENTS
+   ========================================================== */
+
+poSearch.addEventListener(
+
+    "focus",
+
+    function () {
+
+        renderPODropdown(
+            poSearch.value
+        );
+
+    }
+
+);
+
+
+poSearch.addEventListener(
+
+    "input",
+
+    function () {
+
+        renderPODropdown(
+            poSearch.value
+        );
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   JOB TYPE
+   ========================================================== */
+
+document
+
+    .querySelectorAll(
+        'input[name="jobType"]'
+    )
+
+    .forEach(
+
+        function (radio) {
+
+
+            radio.addEventListener(
+
+                "change",
+
+                function () {
+
+
+                    if (
+                        this.value === "R"
+                    ) {
+
+
+                        replacementSection
+
+                            .classList
+
+                            .remove(
+                                "hidden"
+                            );
+
+
+                        loadReplacementData();
+
+
+                    } else {
+
+
+                        replacementSection
+
+                            .classList
+
+                            .add(
+                                "hidden"
+                            );
+
+
+                        selectedReplacement =
+                            null;
+
+
+                        replacementSelect.value =
+                            "";
+
+                    }
+
+
+                }
+
+            );
+
+
+        }
+
+    );
+
+
+
+/* ==========================================================
+   REPLACEMENT
+   ========================================================== */
+
+function loadReplacementData() {
+
+
+    replacementSelect.innerHTML =
+
+        '<option value="">' +
+        'Select Replacement ID' +
+        '</option>';
+
+
+    replacementAdditionalData
+
+        .forEach(
+
+            function (item) {
+
+
+                const option =
+                    document.createElement(
+                        "option"
+                    );
+
+
+                option.value =
+                    item.Id;
+
+
+                option.textContent =
+                    item.ReplacementID;
+
+
+                replacementSelect.appendChild(
+                    option
+                );
+
+
+            }
+
+        );
+
+}
+
+
+
+/* ==========================================================
+   REPLACEMENT CHANGE
+   ========================================================== */
+
+replacementSelect.addEventListener(
+
+    "change",
+
+    function () {
+
+
+        const id =
+            this.value;
+
+
+        selectedReplacement =
+
+            replacementAdditionalData.find(
+
+                function (item) {
+
+                    return (
+
+                        String(
+                            item.Id
+                        ) ===
+                        String(id)
+
+                    );
+
+                }
+
+            ) || null;
+
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   WORKER SEARCH
+   ========================================================== */
+
+function renderWorkerDropdown(
+    searchText = ""
+) {
+
+
+    const text =
+
+        searchText
+            .toLowerCase()
+            .trim();
+
+
+    const filtered =
+
+        workerData.filter(
+
+            function (worker) {
+
+
+                const fullName =
+
+                    (
+
+                        String(
+                            worker.FirstName || ""
+                        )
+
+                        +
+
+                        " "
+
+                        +
+
+                        String(
+                            worker.LastName || ""
+                        )
+
+                    )
+                    .toLowerCase();
+
+
+                return (
+
+                    fullName.includes(
+                        text
+                    )
+
+                    ||
+
+                    String(
+                        worker.EmpID || ""
+                    )
+                    .toLowerCase()
+                    .includes(text)
+
+                    ||
+
+                    String(
+                        worker.Company || ""
+                    )
+                    .toLowerCase()
+                    .includes(text)
+
+                );
+
+
+            }
+
+        );
+
+
+    workerDropdown.innerHTML =
+        "";
+
+
+    filtered
+
+        .filter(
+
+            function (worker) {
+
+
+                return !selectedWorkers.some(
+
+                    function (selected) {
+
+
+                        return (
+
+                            selected.Id ===
+                            worker.Id
+
+                        );
+
+
+                    }
+
+                );
+
+
+            }
+
+        )
+
+        .slice(
+            0,
+            50
+        )
+
+        .forEach(
+
+            function (worker) {
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "dropdown-item";
+
+
+                item.innerHTML =
+
+                    "<strong>" +
+
+                    (
+                        worker.FirstName || ""
+                    ) +
+
+                    " " +
+
+                    (
+                        worker.LastName || ""
+                    ) +
+
+                    "</strong><br>" +
+
+                    "<small>" +
+
+                    (
+                        worker.EmpID || ""
+                    ) +
+
+                    " | " +
+
+                    (
+                        worker.Company || ""
+                    ) +
+
+                    "</small>";
+
+
+                item.addEventListener(
+
+                    "click",
+
+                    function () {
+
+                        selectWorker(
+                            worker
+                        );
+
+                    }
+
+                );
+
+
+                workerDropdown.appendChild(
+                    item
+                );
+
+
+            }
+
+        );
+
+
+    if (
+        workerDropdown.children.length > 0
+    ) {
+
+
+        workerDropdown
+
+            .classList
+
+            .remove(
+                "hidden"
+            );
+
+
+    } else {
+
+
+        workerDropdown
+
+            .classList
+
+            .add(
+                "hidden"
+            );
+
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   SELECT WORKER
+   ========================================================== */
+
+function selectWorker(
+    worker
+) {
+
+
+    workerSearch.value =
+
+        (
+
+            worker.FirstName || ""
+
+        ) +
+
+        " " +
+
+        (
+
+            worker.LastName || ""
+
+        );
+
+
+    workerDesignation.value =
+        worker.Designation || "";
+
+
+    workerSearch.dataset.workerId =
+        worker.Id;
+
+
+    workerSearch.dataset.workerJson =
+        JSON.stringify(
+            worker
+        );
+
+
+    workerDropdown
+
+        .classList
+
+        .add(
+            "hidden"
+        );
+
+}
+
+
+
+/* ==========================================================
+   WORKER EVENTS
+   ========================================================== */
+
+workerSearch.addEventListener(
+
+    "focus",
+
+    function () {
+
+
+        renderWorkerDropdown(
+            workerSearch.value
+        );
+
+
+    }
+
+);
+
+
+workerSearch.addEventListener(
+
+    "input",
+
+    function () {
+
+
+        workerDesignation.value =
+            "";
+
+
+        delete workerSearch.dataset.workerId;
+
+        delete workerSearch.dataset.workerJson;
+
+
+        renderWorkerDropdown(
+            workerSearch.value
+        );
+
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   ADD WORKER
+   ========================================================== */
+
+addWorkerBtn.addEventListener(
+
+    "click",
+
+    function () {
+
+
+        const workerJson =
+
+            workerSearch.dataset
+                .workerJson;
+
+
+        if (!workerJson) {
+
+
+            showStatus(
+
+                "Please select a worker first.",
+
+                "error"
+
+            );
+
+
+            return;
+
+        }
+
+
+        if (
+            selectedWorkers.length >= 30
+        ) {
+
+
+            showStatus(
+
+                "Maximum 30 workers per submission.",
+
+                "error"
+
+            );
+
+
+            return;
+
+        }
+
+
+        const worker =
+
+            JSON.parse(
+                workerJson
+            );
+
+
+        const alreadyAdded =
+
+            selectedWorkers.some(
+
+                function (item) {
+
+                    return (
+                        item.Id ===
+                        worker.Id
+                    );
+
+                }
+
+            );
+
+
+        if (alreadyAdded) {
+
+
+            showStatus(
+
+                "This worker has already been added.",
+
+                "error"
+
+            );
+
+
+            return;
+
+        }
+
+
+        selectedWorkers.push(
+            worker
+        );
+
+
+        renderSelectedWorkers();
+
+
+        workerSearch.value =
+            "";
+
+
+        workerDesignation.value =
+            "";
+
+
+        delete workerSearch.dataset.workerId;
+
+        delete workerSearch.dataset.workerJson;
+
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   RENDER SELECTED WORKERS
+   ========================================================== */
+
+function renderSelectedWorkers() {
+
+
+    selectedWorkersContainer.innerHTML =
+        "";
+
+
+    selectedWorkers.forEach(
+
+        function (
+            worker,
+            index
+        ) {
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+
+            card.className =
+                "worker-card";
+
+
+            const info =
+                document.createElement(
+                    "div"
+                );
+
+
+            info.className =
+                "worker-info";
+
+
+            const name =
+                document.createElement(
+                    "div"
+                );
+
+
+            name.className =
+                "worker-name";
+
+
+            name.textContent =
+
+                (
+
+                    worker.FirstName || ""
+
+                ) +
+
+                " " +
+
+                (
+
+                    worker.LastName || ""
+
+                );
+
+
+            const details =
+                document.createElement(
+                    "div"
+                );
+
+
+            details.className =
+                "worker-details";
+
+
+            details.textContent =
+
+                (
+
+                    worker.EmpID || ""
+
+                ) +
+
+                " | " +
+
+                (
+
+                    worker.Designation || ""
+
+                ) +
+
+                " | " +
+
+                (
+
+                    worker.Company || ""
+
+                );
+
+
+            info.appendChild(
+                name
+            );
+
+
+            info.appendChild(
+                details
+            );
+
+
+            const removeBtn =
+                document.createElement(
+                    "button"
+                );
+
+
+            removeBtn.type =
+                "button";
+
+
+            removeBtn.className =
+                "remove-worker";
+
+
+            removeBtn.textContent =
+                "Remove";
+
+
+            removeBtn.addEventListener(
+
+                "click",
+
+                function () {
+
+
+                    selectedWorkers.splice(
+
+                        index,
+
+                        1
+
+                    );
+
+
+                    renderSelectedWorkers();
+
+
+                }
+
+            );
+
+
+            card.appendChild(
+                info
+            );
+
+
+            card.appendChild(
+                removeBtn
+            );
+
+
+            selectedWorkersContainer
+                .appendChild(
+                    card
+                );
+
+
+        }
+
+    );
+
+}
+
+
+
+/* ==========================================================
+   STATUS
+   ========================================================== */
+
+function showStatus(
+    message,
+    type
+) {
+
+
+    statusMessage.textContent =
+        message;
+
+
+    statusMessage.className =
+        "status-message";
+
+
+    if (
+        type === "success"
+    ) {
+
+
+        statusMessage
+
+            .classList
+
+            .add(
+                "success-message"
+            );
+
+
+    }
+
+    else if (
+        type === "error"
+    ) {
+
+
+        statusMessage
+
+            .classList
+
+            .add(
+                "error-message"
+            );
+
+
+    }
+
+    else {
+
+
+        statusMessage
+
+            .classList
+
+            .add(
+                "info-message"
+            );
+
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   SUBMIT
+   ==========================================================
+
+   CURRENTLY STILL TEST 2.
+
+   This does NOT submit anything to SharePoint yet.
+
+   It only tests that JavaScript is working and
+   navigates to the SharePoint site.
+   ========================================================== */
+
+submitBtn.addEventListener(
+
+    "click",
+
+    function () {
+
+
+        console.log(
+            "TEST 2: Submit button clicked"
+        );
+
+
+        alert(
+            "TEST 2: JavaScript navigation is working"
+        );
+
+
+        showStatus(
+
+            "TEST 2: JavaScript is working. " +
+            "Navigating to SharePoint...",
+
+            "success"
+
+        );
+
+
+        setTimeout(
+
+            function () {
+
+
+                window.location.href =
+
+                    "https://basf.sharepoint.com/sites/bpc-contractor-mgmt-ext";
+
+
+            },
+
+            500
+
+        );
+
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   CLOSE DROPDOWNS WHEN CLICKING OUTSIDE
+   ========================================================== */
+
+document.addEventListener(
+
+    "click",
+
+    function (event) {
+
+
+        if (
+
+            !poSearch.contains(
+                event.target
+            )
+
+            &&
+
+            !poDropdown.contains(
+                event.target
+            )
+
+        ) {
+
+
+            poDropdown
+
+                .classList
+
+                .add(
+                    "hidden"
+                );
+
+
+        }
+
+
+        if (
+
+            !workerSearch.contains(
+                event.target
+            )
+
+            &&
+
+            !workerDropdown.contains(
+                event.target
+            )
+
+        ) {
+
+
+            workerDropdown
+
+                .classList
+
+                .add(
+                    "hidden"
+                );
+
+
+        }
+
+
+    }
+
+);
+
+
+
+/* ==========================================================
+   INITIAL LOAD
+   ========================================================== */
+
+loadContractorManagementData();
+
+
+</script>
+
+
+</body>
+
+</html>
