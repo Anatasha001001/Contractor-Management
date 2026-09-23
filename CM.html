@@ -1259,36 +1259,377 @@ We are NOT using:
 ==========================================================
 */
 
+/* ==========================================================
+SUBMIT ALL - CREATE JSON FILE
+========================================================== */
+
 submitBtn.addEventListener(
     "click",
     function () {
 
+        console.log("SUBMIT ALL: Button clicked");
+
+
+        /* ==================================================
+           1. VALIDATE PO
+        ================================================== */
+
+        if (!selectedPO) {
+
+            showStatus(
+                "Please select a Purchase Order first.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* ==================================================
+           2. GET JOB TYPE
+        ================================================== */
+
+        const selectedJobType =
+            document.querySelector(
+                'input[name="jobType"]:checked'
+            );
+
+
+        if (!selectedJobType) {
+
+            showStatus(
+                "Please select a Job Type.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        const jobType =
+            selectedJobType.value;
+
+
+        /* ==================================================
+           3. VALIDATE REPLACEMENT
+           Only required for Replacement (R)
+        ================================================== */
+
+        if (
+            jobType === "R" &&
+            !selectedReplacement
+        ) {
+
+            showStatus(
+                "Please select a Replacement ID.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* ==================================================
+           4. VALIDATE WORKER
+        ================================================== */
+
+        if (
+            !selectedWorkers ||
+            selectedWorkers.length === 0
+        ) {
+
+            showStatus(
+                "Please add at least one worker.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /* ==================================================
+           5. PREPARE SELECTED PO DATA
+        ================================================== */
+
+        const po = {
+
+            Id:
+                selectedPO.Id ?? null,
+
+            PO_ID:
+                selectedPO.PO_ID ?? "",
+
+            WorkOrder:
+                selectedPO.WorkOrder ?? "",
+
+            Description:
+                selectedPO.Description ?? "",
+
+            Display:
+                selectedPO.Display ?? ""
+
+        };
+
+
+        /* ==================================================
+           6. PREPARE REPLACEMENT DATA
+        ================================================== */
+
+        let replacement = null;
+
+
+        if (
+            jobType === "R" &&
+            selectedReplacement
+        ) {
+
+            replacement = {
+
+                Id:
+                    selectedReplacement.Id ?? null,
+
+                ReplacementID:
+                    selectedReplacement.ReplacementID ?? "",
+
+                FirstName:
+                    selectedReplacement.FirstName ?? "",
+
+                LastName:
+                    selectedReplacement.LastName ?? "",
+
+                Designation:
+                    selectedReplacement.Designation ?? ""
+
+            };
+
+        }
+
+
+        /* ==================================================
+           7. PREPARE WORKER DATA
+        ================================================== */
+
+        const workers =
+            selectedWorkers.map(
+                function (worker, index) {
+
+                    return {
+
+                        Sequence:
+                            index + 1,
+
+                        Id:
+                            worker.Id ?? null,
+
+                        EmpID:
+                            worker.EmpID ?? "",
+
+                        FirstName:
+                            worker.FirstName ?? "",
+
+                        LastName:
+                            worker.LastName ?? "",
+
+                        Designation:
+                            worker.Designation ?? "",
+
+                        Company:
+                            worker.Company ?? ""
+
+                    };
+
+                }
+            );
+
+
+        /* ==================================================
+           8. CREATE COMPLETE SUBMISSION OBJECT
+        ================================================== */
+
+        const submissionData = {
+
+            submissionDate:
+                new Date().toISOString(),
+
+            jobType:
+                jobType,
+
+            po:
+                po,
+
+            replacement:
+                replacement,
+
+            workers:
+                workers
+
+        };
+
+
+        /* ==================================================
+           9. SHOW JSON IN CONSOLE
+        ================================================== */
+
         console.log(
-            "TEST 2: Submit button clicked"
+            "========================================"
         );
 
-        alert(
-            "TEST 2: JavaScript navigation is working"
+        console.log(
+            "SUBMISSION DATA"
         );
 
-        showStatus(
-            "TEST 2: JavaScript is working. Navigating to SharePoint...",
-            "success"
+        console.log(
+            submissionData
         );
 
-        /*
-        Give the alert/status a moment,
-        then navigate.
-        */
+        console.log(
+            "========================================"
+        );
+
+
+        /* ==================================================
+           10. CONVERT OBJECT TO JSON
+        ================================================== */
+
+        const jsonData =
+            JSON.stringify(
+                submissionData,
+                null,
+                4
+            );
+
+
+        console.log(
+            "JSON DATA:"
+        );
+
+        console.log(
+            jsonData
+        );
+
+
+        /* ==================================================
+           11. CREATE JSON FILE
+        ================================================== */
+
+        const blob =
+            new Blob(
+                [jsonData],
+                {
+                    type: "application/json;charset=utf-8"
+                }
+            );
+
+
+        /* ==================================================
+           12. CREATE SAFE FILE NAME
+        ================================================== */
+
+        const safePO =
+            String(
+                selectedPO.PO_ID || "UnknownPO"
+            )
+            .replace(
+                /[^a-zA-Z0-9_-]/g,
+                "_"
+            );
+
+
+        const now =
+            new Date();
+
+
+        const timestamp =
+            now.getFullYear() +
+            "-" +
+            String(
+                now.getMonth() + 1
+            ).padStart(2, "0") +
+            "-" +
+            String(
+                now.getDate()
+            ).padStart(2, "0") +
+            "_" +
+            String(
+                now.getHours()
+            ).padStart(2, "0") +
+            "-" +
+            String(
+                now.getMinutes()
+            ).padStart(2, "0") +
+            "-" +
+            String(
+                now.getSeconds()
+            ).padStart(2, "0");
+
+
+        const fileName =
+            "CM_Submission_" +
+            safePO +
+            "_" +
+            timestamp +
+            ".json";
+
+
+        /* ==================================================
+           13. DOWNLOAD JSON
+        ================================================== */
+
+        const downloadUrl =
+            URL.createObjectURL(blob);
+
+
+        const downloadLink =
+            document.createElement("a");
+
+
+        downloadLink.href =
+            downloadUrl;
+
+
+        downloadLink.download =
+            fileName;
+
+
+        document.body.appendChild(
+            downloadLink
+        );
+
+
+        downloadLink.click();
+
+
+        document.body.removeChild(
+            downloadLink
+        );
+
 
         setTimeout(
             function () {
 
-                window.location.href =
-                    "https://basf.sharepoint.com/sites/bpc-contractor-mgmt-ext";
+                URL.revokeObjectURL(
+                    downloadUrl
+                );
 
             },
-            500
+            1000
+        );
+
+
+        /* ==================================================
+           14. SUCCESS MESSAGE
+        ================================================== */
+
+        showStatus(
+            "Submission JSON created successfully: " +
+            fileName,
+            "success"
+        );
+
+
+        console.log(
+            "JSON file created:",
+            fileName
         );
 
     }
