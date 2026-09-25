@@ -13,8 +13,10 @@
 
     <script>
 
-        // PASTE YOUR POWER AUTOMATE HTTP POST URL HERE
-        const flowUrl = "PASTE_YOUR_POWER_AUTOMATE_HTTP_URL_HERE";
+        // ==========================================
+        // PASTE YOUR POWER AUTOMATE HTTP URL HERE
+        // ==========================================
+        const flowUrl = "https://0eb71ffa4b02edec861c63608d58f3.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/06/workflows/0567c146a09f4c0eb2e170c73e539d0d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hTOEvG9YzWgY1U63SGf7xruK7jXD9JO1ZnjmfBcDt34";
 
 
         async function testSubmit() {
@@ -62,26 +64,26 @@
                 });
 
 
-                const result = await response.json();
+                // Read response as TEXT first
+                const responseText = await response.text();
 
-                console.log("Power Automate response:", result);
 
-                if (response.ok) {
+                console.log("HTTP Status:", response.status);
+                console.log("Response:", responseText);
 
-                    alert("SUCCESS! Data sent to Power Automate.");
 
-                } else {
+                alert(
+                    "HTTP Status: " + response.status +
+                    "\n\nResponse:\n" +
+                    responseText.substring(0, 500)
+                );
 
-                    alert("FAILED! HTTP Status: " + response.status);
-
-                }
 
             } catch (error) {
 
-                console.error(error);
+                console.error("ERROR:", error);
 
-                alert("ERROR: " + error.message);
-
+                alert("ERROR:\n" + error.message);
             }
         }
 
