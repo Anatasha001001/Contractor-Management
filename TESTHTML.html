@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTTP Trigger Test</title>
+</head>
+
+<body>
+
+    <button onclick="testFlow()">
+        Test Power Automate
+    </button>
+
+    <script>
+
+        async function testFlow() {
+
+            const flowUrl = "PASTE-YOUR-HTTP-TRIGGER-URL-HERE";
+
+            try {
+
+                const response = await fetch(flowUrl, {
+                    method: "POST"
+                });
+
+                const result = await response.text();
+
+                console.log("Status:", response.status);
+                console.log("Response:", result);
+
+                alert(
+                    "HTTP Status: " +
+                    response.status +
+                    "\n\n" +
+                    result
+                );
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert(
+                    "ERROR:\n" +
+                    error
+                );
+            }
+        }
+
+    </script>
+
+</body>
+</html>
