@@ -1,65 +1,41 @@
-<!DOCTYPE html>
-<html>
+const flowUrl = "https://0eb71ffa4b02edec861c63608d58f3.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/06/workflows/0567c146a09f4c0eb2e170c73e539d0d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hTOEvG9YzWgY1U63SGf7xruK7jXD9JO1ZnjmfBcDt34";
 
-<head>
-    <title>Power Automate JSON Test</title>
-</head>
-
-<body>
-
-    <h2>Power Automate JSON Test</h2>
-
-    <button onclick="sendTestJSON()">
-        Send Test JSON
-    </button>
-
-    <script>
-
-        async function sendTestJSON() {
-
-            const flowUrl = "https://0eb71ffa4b02edec861c63608d58f3.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/06/workflows/0567c146a09f4c0eb2e170c73e539d0d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hTOEvG9YzWgY1U63SGf7xruK7jXD9JO1ZnjmfBcDt34";
-
-            const testData = {
-                name: "Test Contractor",
-                po: "4500123456",
-                status: "Submitted"
-            };
-
-            try {
-
-                const response = await fetch(flowUrl, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(testData)
-                });
-
-                const result = await response.text();
-
-                console.log("HTTP Status:", response.status);
-                console.log("Response:", result);
-
-                alert(
-                    "HTTP Status: " +
-                    response.status +
-                    "\n\n" +
-                    result
-                );
-
-            } catch (error) {
-
-                console.error(error);
-
-                alert(
-                    "ERROR:\n" +
-                    error
-                );
-            }
+const testData = {
+    WorkOrderId: 1,
+    PO_ID: "4000000943_10",
+    WorkOrder: 983068020,
+    Description: "[MOC] B210-020726",
+    TypeofJob: "N",
+    ReplacementID: null,
+    ReplacementSharePointID: null,
+    Workers: [
+        {
+            SharePointID: 1,
+            EmpID: "TEST001",
+            FirstName: "Test",
+            LastName: "Worker 1",
+            Designation: "Contractor",
+            Company: "Test Company"
+        },
+        {
+            SharePointID: 2,
+            EmpID: "TEST002",
+            FirstName: "Test",
+            LastName: "Worker 2",
+            Designation: "Contractor",
+            Company: "Test Company"
         }
+    ]
+};
 
-    </script>
+const response = await fetch(flowUrl, {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(testData)
+});
 
-</body>
+const result = await response.json();
 
-</html>
+console.log(result);
