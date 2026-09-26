@@ -1241,60 +1241,253 @@ function showStatus(
 }
 
 
-/*
-==========================================================
-TEST 2
-==========================================================
+/*==========================================================
+SUBMIT TO POWER AUTOMATE
+==========================================================*/
 
-IMPORTANT:
+const flowUrl =
+    "https://0eb71ffa4b02edec861c63608d58f3.42.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/06/workflows/0567c146a09f4c0eb2e170c73e539d0d/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hTOEvG9YzWgY1U63SGf7xruK7jXD9JO1ZnjmfBcDt34";
 
-This is ONLY a navigation test.
-
-We are NOT using:
-- fetch()
-- SharePoint REST API
-- Power Automate
-- CM_SubmissionQueue
-
-==========================================================
-*/
 
 submitBtn.addEventListener(
     "click",
-    function () {
+    async function () {
 
         console.log(
-            "TEST 2: Submit button clicked"
+            "Submit button clicked"
         );
 
-        alert(
-            "TEST 2: JavaScript navigation is working"
+
+        /*==================================================
+        VALIDATION
+        ==================================================*/
+
+        if (!selectedPO) {
+
+            showStatus(
+                "Please select a PO first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        if (selectedWorkers.length === 0) {
+
+            showStatus(
+                "Please select at least one worker.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        /*==================================================
+        GET JOB TYPE
+        ==================================================*/
+
+        const selectedJobType =
+            document.querySelector(
+                'input[name="jobType"]:checked'
+            );
+
+
+        const typeOfJob =
+            selectedJobType
+                ? selectedJobType.value
+                : "N";
+
+
+        /*==================================================
+        BUILD WORKERS
+        ==================================================*/
+
+        const workers =
+            selectedWorkers.map(
+                function (worker) {
+
+                    return {
+
+                        EmpID:
+                            worker.EmpID || "",
+
+                        FirstName:
+                            worker.FirstName || "",
+
+                        LastName:
+                            worker.LastName || "",
+
+                        Designation:
+                            worker.Designation || "",
+
+                        Company:
+                            worker.Company || ""
+
+                    };
+
+                }
+            );
+
+
+        /*==================================================
+        BUILD SUBMISSION JSON
+        ==================================================*/
+
+        const submissionData = {
+
+            PO_ID:
+                selectedPO.PO_ID || "",
+
+            WorkOrder:
+                Number(selectedPO.WorkOrder) || 0,
+
+            Description:
+                selectedPO.Description || "",
+
+            TypeofJob:
+                typeOfJob,
+
+            ReplacementID:
+                selectedReplacement
+                    ? selectedReplacement.ReplacementID
+                    : null,
+
+            Workers:
+                workers
+
+        };
+
+
+        console.log(
+            "Submission Data:",
+            submissionData
         );
+
+
+        /*==================================================
+        SUBMIT
+        ==================================================*/
+
+        submitBtn.disabled = true;
 
         showStatus(
-            "TEST 2: JavaScript is working. Navigating to SharePoint...",
-            "success"
+            "Submitting...",
+            "info"
         );
 
-        /*
-        Give the alert/status a moment,
-        then navigate.
-        */
 
-        setTimeout(
-            function () {
+        try {
 
-                window.location.href =
-                    "https://basf.sharepoint.com/sites/bpc-contractor-mgmt-ext";
+            const response =
+                await fetch(
+                    flowUrl,
+                    {
+                        method: "POST",
 
-            },
-            500
-        );
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                submissionData
+                            )
+                    }
+                );
+
+
+            const responseText =
+                await response.text();
+
+
+            console.log(
+                "HTTP Status:",
+                response.status
+            );
+
+            console.log(
+                "Response:",
+                responseText
+            );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "HTTP " +
+                    response.status +
+                    ": " +
+                    responseText
+                );
+
+            }
+
+
+            showStatus(
+                "Submission successful.",
+                "success"
+            );
+
+
+            alert(
+                "Submission successful!"
+            );
+
+
+            /*================================================
+            CLEAR FORM AFTER SUCCESS
+            =================================================*/
+
+            selectedPO = null;
+
+            selectedReplacement = null;
+
+            selectedWorkers = [];
+
+            poSearch.value = "";
+
+            poDetails.classList.add(
+                "hidden"
+            );
+
+            replacementSelect.value = "";
+
+            renderSelectedWorkers();
+
+
+        } catch (error) {
+
+            console.error(
+                "Submission error:",
+                error
+            );
+
+
+            showStatus(
+                "Submission failed. Please try again.",
+                "error"
+            );
+
+
+            alert(
+                "Submission failed:\n\n" +
+                error.message
+            );
+
+
+        } finally {
+
+            submitBtn.disabled = false;
+
+        }
 
     }
 );
-
-
 /*
 ==========================================================
 CLOSE DROPDOWNS WHEN CLICKING OUTSIDE
