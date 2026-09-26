@@ -457,32 +457,112 @@
         </div>
 
 
-        <!-- REPLACEMENT -->
-        <div
-            id="replacementSection"
-            class="section hidden">
+        <!-- REPLACEMENT / ADDITIONAL -->
+<div
+    id="replacementSection"
+    class="section hidden">
 
-            <div class="section-title">
-                Replacement ID
-            </div>
+    <div class="section-title" id="replacementSectionTitle">
+        Replacement ID
+    </div>
 
-            <div class="replacement-container">
+    <div class="replacement-container">
 
-                <label for="replacementSelect">
-                    Select Replacement
+        <label for="replacementSelect">
+            Select Replacement
+        </label>
+
+        <select id="replacementSelect">
+
+            <option value="">
+                Select Replacement ID
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- SELECTED PERSON DETAILS -->
+    <div
+        id="replacementPersonDetails"
+        class="section hidden"
+        style="margin-top: 20px;">
+
+        <div class="section-title">
+            Selected Worker Details
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>
+                    First Name
                 </label>
 
-                <select id="replacementSelect">
+                <input
+                    type="text"
+                    id="replacementFirstName"
+                    readonly
+                >
 
-                    <option value="">
-                        Select Replacement ID
-                    </option>
+            </div>
 
-                </select>
+
+            <div class="form-group">
+
+                <label>
+                    Last Name
+                </label>
+
+                <input
+                    type="text"
+                    id="replacementLastName"
+                    readonly
+                >
 
             </div>
 
         </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>
+                    Designation
+                </label>
+
+                <input
+                    type="text"
+                    id="replacementDesignation"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Company
+                </label>
+
+                <input
+                    type="text"
+                    id="replacementCompany"
+                    readonly
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 
         <!-- WORKER -->
